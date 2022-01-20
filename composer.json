@@ -1,0 +1,15 @@
+{
+    "name": "andyp/sidebar-menu",
+    "autoload": {
+        "psr-4": {
+            "andyp\\sidebarmenu\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Andy Pearson",
+            "email": "andy@londonparkour.com"
+        }
+    ],
+    "require": {}
+}
