@@ -11,5 +11,6 @@
             "email": "andy@londonparkour.com"
         }
     ],
+    "license": "MIT",
     "require": {}
 }
