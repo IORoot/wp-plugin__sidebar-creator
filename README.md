@@ -6,7 +6,9 @@ You can assign a Taxonomy to the sidebar and it will generate the full structure
 
 ## Usage
 
-`[sidebar_menu tax="post_category"]`
+`[sidebar_menu slug="test_sidebar"]`
+
+
 
 ## Changelog
 

@@ -8,48 +8,22 @@ namespace andyp\sidebarmenu\lib;
 class register_shortcodes
 {
 
-    public $options_data;
-    public $loop_key;
-    public $loop_instance;
-
-
-
     public function __construct(){
-
-        $this->get_sidebar_data();
-        if (!$this->options_data){ return; };
-
         $this->register_shortcodes();
     }
-
-
-
-    /**
-     * Retrieve all data from the options page.
-     */
-    private function get_sidebar_data()
-    {
-        $data = get_fields( 'options' );
-
-        if (array_key_exists('sidebars', $data)){
-            $this->options_data = $data['sidebars'];
-        }
-        
-    }
-
+    
 
     private function register_shortcodes()
     {
-        foreach($this->options_data as $this->loop_key => $this->loop_instance)
-        {
-            add_shortcode( $this->loop_instance['slug'], [$this, 'run_sidebar'] );
-        }
+        add_shortcode( 'sidebar_menu', [$this, 'run'] );
     }
 
 
-
-    public function run_sidebar($atts = array(), $content = null, $shortcode = null)
+    public function run($attributes = array(), $content = null)
     {
-        return $shortcode;
+        $sidebar = new build_sidebar;
+        $sidebar->set_attributes($attributes);
+        $sidebar->build_sidebar();
+        return $sidebar->get_result();
     }
 }

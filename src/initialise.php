@@ -12,6 +12,11 @@ class initialise {
         // │                                ACF    	                          	     │
         // └─────────────────────────────────────────────────────────────────────────┘
         $this->acf_init();
+
+        // ┌─────────────────────────────────────────────────────────────────────────┐
+        // │                        Register Shortcode    	                         │
+        // └─────────────────────────────────────────────────────────────────────────┘
+        $this->register_shortcodes();
     }
 
 
@@ -21,6 +26,15 @@ class initialise {
     public function acf_init()
     {
         new acf\acf_init;
+    }
+
+
+    /**
+     * Create the [sidebar_menu] shortcode.
+     */
+    public function register_shortcodes()
+    {
+        new lib\register_shortcodes;
     }
 
 }
