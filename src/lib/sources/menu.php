@@ -110,7 +110,7 @@ class menu implements sourceInterface
      */
     private function open_ul($extra_classes)
     {
-        return '<ul class="'.$extra_classes.' '.$this->options_data["unordered_list_classes"].'">';
+        return '<ul class="'.$extra_classes.' '.$this->config["unordered_list_classes"].'">';
     }
 
     /**
@@ -126,7 +126,7 @@ class menu implements sourceInterface
      */
     private function open_li()
     {
-        return '<li class="menu-item '.$this->options_data["list_item_classes"].'">';
+        return '<li class="menu-item '.$this->config["list_item_classes"].'">';
     }
 
     /**
@@ -142,7 +142,7 @@ class menu implements sourceInterface
      */
     private function menu_title()
     {
-        return '<a class="'.$this->options_data["link_classes"].'" href="'.$this->loop_item->url.'" title="'.$this->loop_item->title.'">' . $this->loop_item->title . '</a>';
+        return '<a class="'.$this->config["link_classes"].'" href="'.$this->loop_item->url.'" title="'.$this->loop_item->title.'">' . $this->loop_item->title . '</a>';
     }
 
 }

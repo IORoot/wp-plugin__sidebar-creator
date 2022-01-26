@@ -56,9 +56,9 @@ class taxonomy implements sourceInterface
     private function set_classes_data()
     {
         $this->walker->set_classes_data([
-            'unordered_list_classes' => $this->options_data["unordered_list_classes"],
-            'list_item_classes' => $this->options_data["list_item_classes"],
-            'link_classes' => $this->options_data["link_classes"],
+            'unordered_list_classes' => $this->config["unordered_list_classes"],
+            'list_item_classes' => $this->config["list_item_classes"],
+            'link_classes' => $this->config["link_classes"],
         ]);
     }
 
@@ -89,7 +89,7 @@ class taxonomy implements sourceInterface
          * Anchor filter
          */
         \add_filter('category_list_link_attributes', function($atts) { 
-            $atts['class'] = $this->options_data["link_classes"];
+            $atts['class'] = $this->config["link_classes"];
             return $atts; 
         });
 
@@ -97,7 +97,7 @@ class taxonomy implements sourceInterface
          * list item filter.
          */
         \add_filter('category_css_class', function($atts) { 
-            $atts['class'] = $this->options_data["list_item_classes"];
+            $atts['class'] = $this->config["list_item_classes"];
             return $atts; 
         });
     }
@@ -106,7 +106,7 @@ class taxonomy implements sourceInterface
     {   
         ob_start();
 
-            echo $this->options_data["prefix_suffix"]["prefix_top_unordered_list_open"].'<ul class="'. $this->options_data["unordered_list_classes"] . ' '. $this->config["menu_source_taxonomy"].'">'.$this->options_data["prefix_suffix"]["suffix_top_unordered_list_open"];
+            echo $this->options_data["prefix_suffix"]["prefix_top_unordered_list_open"].'<ul class="'. $this->config["unordered_list_classes"] . ' '. $this->config["menu_source_taxonomy"].'">'.$this->options_data["prefix_suffix"]["suffix_top_unordered_list_open"];
             wp_list_categories([
                 'taxonomy'     => $this->config["menu_source_taxonomy"],
                 'orderby'      => 'name',
