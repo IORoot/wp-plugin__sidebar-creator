@@ -31,7 +31,10 @@ class build_sidebar
     {
         $this->get_sidebars_data();
         $this->get_single_sidebar();
+        $this->open_wrapper();
         $this->build_structure();
+        $this->insert_styles();
+        $this->close_wrapper();
     }
 
     /**
@@ -76,5 +79,18 @@ class build_sidebar
         }
     }
 
+    private function open_wrapper()
+    {
+        $this->output[] = '<div class="'.$this->attributes["slug"]. ' ' . $this->options_data["wrapper_classes"] .'">';
+    }
 
+    private function close_wrapper()
+    {
+        $this->output[] = '</div>';
+    }
+
+    private function insert_styles()
+    {
+        $this->output[] = '<style>'.$this->options_data["style"].'</style>';
+    }
 }

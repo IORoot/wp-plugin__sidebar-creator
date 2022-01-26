@@ -36,6 +36,7 @@ class taxonomy implements sourceInterface
         $this->set_walker();
         $this->switch_parent_posts();
         $this->set_classes_data();
+        $this->set_prefix_suffix_data();
         $this->classes_filters();
         $this->get_source();
     }
@@ -61,24 +62,51 @@ class taxonomy implements sourceInterface
         ]);
     }
 
+    private function set_prefix_suffix_data()
+    {
+        $ps = $this->options_data["prefix_suffix"];
+        $this->walker->set_prefix_suffix_data([
+            'prefix_link_open' => $ps["prefix_link_open"],
+            'suffix_link_open' => $ps["suffix_link_open"],
+            'prefix_link_close' => $ps["prefix_link_close"],
+            'suffix_link_close' => $ps["suffix_link_close"],
+            'prefix_count' => $ps["prefix_count"],
+            'suffix_count' => $ps["suffix_count"],
+            'prefix_list_item_open' => $ps["prefix_list_item_open"],
+            'suffix_list_item_open' => $ps["suffix_list_item_open"],
+            'prefix_list_item_close' => $ps["prefix_list_item_close"],
+            'suffix_list_item_close' => $ps["suffix_list_item_close"],
+            'prefix_unordered_list_open' => $ps["prefix_unordered_list_open"],
+            'suffix_unordered_list_open' => $ps["suffix_unordered_list_open"],
+            'prefix_unordered_list_close' => $ps["prefix_unordered_list_close"],
+            'suffix_unordered_list_close' => $ps["suffix_unordered_list_close"],
+        ]);
+    }
+
     private function classes_filters()
     {
         /**
          * Anchor filter
          */
-        \add_filter('category_list_link_attributes', function() { return ['class' => $this->options_data["link_classes"]]; });
+        \add_filter('category_list_link_attributes', function($atts) { 
+            $atts['class'] = $this->options_data["link_classes"];
+            return $atts; 
+        });
 
         /**
          * list item filter.
          */
-        \add_filter('category_css_class', function() { return [$this->options_data["list_item_classes"]]; });
+        \add_filter('category_css_class', function($atts) { 
+            $atts['class'] = $this->options_data["list_item_classes"];
+            return $atts; 
+        });
     }
 
     private function get_source()
     {   
         ob_start();
 
-            echo '<ul class="'. $this->options_data["unordered_list_classes"] . ' '. $this->config["menu_source_taxonomy"].'">';
+            echo $this->options_data["prefix_suffix"]["prefix_top_unordered_list_open"].'<ul class="'. $this->options_data["unordered_list_classes"] . ' '. $this->config["menu_source_taxonomy"].'">'.$this->options_data["prefix_suffix"]["suffix_top_unordered_list_open"];
             wp_list_categories([
                 'taxonomy'     => $this->config["menu_source_taxonomy"],
                 'orderby'      => 'name',
@@ -88,7 +116,7 @@ class taxonomy implements sourceInterface
                 'title_li'     => '',
                 'walker'       => $this->walker
             ]);
-            echo '</ul>';
+            echo $this->options_data["prefix_suffix"]["prefix_top_unordered_list_close"].'</ul>'.$this->options_data["prefix_suffix"]["suffix_top_unordered_list_close"];
 
         $this->output[] = ob_get_clean();
     }
