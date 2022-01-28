@@ -170,7 +170,7 @@ class walker_taxonomy_posts extends \Walker_Category {
         }
  
         if ( ! empty( $args['show_count'] ) ) {
-            $link .= ' '.$this->pregged_suffix_prefix["prefix_count"].'(' . number_format_i18n( $category->count ) . ')' . $this->pregged_suffix_prefix["suffix_count"];
+            $link .= ' '.$this->pregged_suffix_prefix["prefix_count"]. number_format_i18n( $category->count ) . $this->pregged_suffix_prefix["suffix_count"];
         }
         if ( 'list' === $args['style'] ) {
             $output     .= "\t".$this->pregged_suffix_prefix["prefix_list_item_open"]."<li";
@@ -262,9 +262,11 @@ class walker_taxonomy_posts extends \Walker_Category {
 
             $posts_list = $this->pregged_suffix_prefix["prefix_unordered_list_open"].'<ul class="children '.$this->classes['unordered_list_classes'].'">'.$this->pregged_suffix_prefix["suffix_unordered_list_open"];
 
-            foreach ($posts as $post) {
+            foreach ($posts as $key => $post) {
                 $posts_list .= $this->pregged_suffix_prefix["prefix_list_item_open"].'<li class="post-item post-item-'.$post->ID.' '.$this->classes['list_item_classes'].'">'.$this->pregged_suffix_prefix["suffix_list_item_open"];
                 $posts_list .= $this->pregged_suffix_prefix["prefix_link_open"].'<a class="'.$this->classes['link_classes'].'" href="' . get_permalink($post->ID) . '">'.$this->pregged_suffix_prefix["suffix_link_open"];
+                // $posts_list .= $this->numberToRoman($key+1) .'. ';
+                $posts_list .= $key+1 .'.  ';
                 $posts_list .= get_the_title($post->ID);
                 $posts_list .= $this->pregged_suffix_prefix["prefix_link_close"].'</a>'.$this->pregged_suffix_prefix["suffix_link_close"];
                 $posts_list .= $this->pregged_suffix_prefix["prefix_list_item_close"].'</li>'.$this->pregged_suffix_prefix["suffix_list_item_close"];
@@ -306,4 +308,23 @@ class walker_taxonomy_posts extends \Walker_Category {
         $output .= "$indent".$this->pregged_suffix_prefix["prefix_list_item_close"]."</ul>".$this->pregged_suffix_prefix["suffix_list_item_close"]."\n";
     }
 
+
+    /**
+     * @param int $number
+     * @return string
+     */
+    public function numberToRoman($number) {
+        $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
+        $returnValue = '';
+        while ($number > 0) {
+            foreach ($map as $roman => $int) {
+                if($number >= $int) {
+                    $number -= $int;
+                    $returnValue .= $roman;
+                    break;
+                }
+            }
+        }
+        return $returnValue;
+    }
 }
