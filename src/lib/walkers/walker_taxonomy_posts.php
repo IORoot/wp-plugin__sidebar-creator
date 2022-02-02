@@ -19,6 +19,7 @@ class walker_taxonomy_posts extends \Walker_Category {
     public $pregged_suffix_prefix = [];
     public $classes = [];
     public $expanded = [];
+    public $post_query = '';
 
     /**
      * Set whether to show parent posts or not.
@@ -41,6 +42,11 @@ class walker_taxonomy_posts extends \Walker_Category {
     public function set_expanded($term_ids)
     {
         $this->expanded = $term_ids;
+    }
+
+    public function set_post_query($post_query)
+    {
+        $this->post_query = $post_query;
     }
 
     /**
@@ -261,18 +267,24 @@ class walker_taxonomy_posts extends \Walker_Category {
             return;
         }
 
-        $posts = get_posts([
+
+        $args = [
             'post_type' => $wp_taxonomies[$page->taxonomy]->object_type[0],
             'numberposts' => -1,
             'tax_query' => [
                 [
                     'taxonomy' => $page->taxonomy,
                     'terms' => $page->term_taxonomy_id,
-                    'include_children' => false // Remove if you need posts from term 7 child terms
+                    'include_children' => false
                 ],
             ],
-        ]);
+        ];
 
+        parse_str($this->post_query, $parsed_string);
+
+        $args = array_merge($args, $parsed_string);
+
+        $posts = get_posts($args);
 
         if( !empty( $posts ) ) {
 

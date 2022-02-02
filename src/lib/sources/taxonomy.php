@@ -38,6 +38,7 @@ class taxonomy implements sourceInterface
         $this->switch_parent_posts();
         $this->set_classes_data();
         $this->set_auto_expand_data();
+        $this->set_post_query();
         $this->set_prefix_suffix_data();
         $this->classes_filters();
         $this->get_source();
@@ -53,6 +54,11 @@ class taxonomy implements sourceInterface
     private function switch_parent_posts()
     {
         $this->walker->switch_parent_posts($this->config["list_parent_posts"]);
+    }
+
+    private function set_post_query()
+    {
+        $this->walker->set_post_query($this->config["post_query"]);
     }
 
     private function set_classes_data()
