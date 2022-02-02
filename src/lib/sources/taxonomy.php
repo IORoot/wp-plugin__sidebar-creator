@@ -15,6 +15,7 @@ class taxonomy implements sourceInterface
     public $options_data;
     public $walker = '';
     public $output = [];
+    public $expand = '';
 
     public function config($config)
     {
@@ -36,6 +37,7 @@ class taxonomy implements sourceInterface
         $this->set_walker();
         $this->switch_parent_posts();
         $this->set_classes_data();
+        $this->set_auto_expand_data();
         $this->set_prefix_suffix_data();
         $this->classes_filters();
         $this->get_source();
@@ -60,6 +62,33 @@ class taxonomy implements sourceInterface
             'list_item_classes' => $this->config["list_item_classes"],
             'link_classes' => $this->config["link_classes"],
         ]);
+    }    
+    
+    private function set_auto_expand_data()
+    {
+
+        if (!$this->config["auto_expand"]){
+            return;
+        }
+        
+        // get current page
+        global $wp_query;
+
+        // Expand
+        if (is_a($wp_query->queried_object, 'WP_Term'))
+        {
+            $this->walker->set_expanded($wp_query->queried_object->parent, $wp_query->queried_object->term_id);
+            // string replace to include 'checked'
+            $this->options_data["prefix_suffix"]["suffix_top_unordered_list_open"] = str_replace('<input', '<input checked', $this->options_data["prefix_suffix"]["suffix_top_unordered_list_open"]);
+            
+        }
+
+        // Don't Expand.
+        if (!is_a($wp_query->queried_object, 'WP_Term'))
+        {
+            $this->walker->set_expanded('', '');
+        }
+
     }
 
     private function set_prefix_suffix_data()

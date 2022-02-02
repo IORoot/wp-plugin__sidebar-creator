@@ -18,6 +18,10 @@ class walker_taxonomy_posts extends \Walker_Category {
     public $suffix_prefix = [];
     public $pregged_suffix_prefix = [];
     public $classes = [];
+    public $expanded = [
+        'parent_id' => '',
+        'child_id' => ''
+    ];
 
     /**
      * Set whether to show parent posts or not.
@@ -35,6 +39,12 @@ class walker_taxonomy_posts extends \Walker_Category {
     public function set_prefix_suffix_data($suffix_prefix)
     {
         $this->suffix_prefix = $suffix_prefix;
+    }
+
+    public function set_expanded($parent, $child)
+    {
+        $this->expanded['parent_id'] = $parent;
+        $this->expanded['child_id'] = $child;
     }
 
     /**
@@ -76,6 +86,16 @@ class walker_taxonomy_posts extends \Walker_Category {
                 
             $this->pregged_suffix_prefix[$sp_key] = preg_replace( '/\{\{[\w|\d]*\}\}/',  $this->category->term_id, $sp_instance);
             
+            /**
+             * Set whether expanded or not.
+             */
+            if ($this->category->term_id == $this->expanded["parent_id"] || $this->category->term_id == $this->expanded["child_id"]){
+                foreach ($this->pregged_suffix_prefix as $suffix_prefix_key => $suffix_prefix)
+                {
+                    $this->pregged_suffix_prefix[$suffix_prefix_key] = str_replace('<input', '<input checked', $suffix_prefix);
+                }
+            }
+
         }
 
         /** This filter is documented in wp-includes/category-template.php */
