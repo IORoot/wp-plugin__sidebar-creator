@@ -18,10 +18,7 @@ class walker_taxonomy_posts extends \Walker_Category {
     public $suffix_prefix = [];
     public $pregged_suffix_prefix = [];
     public $classes = [];
-    public $expanded = [
-        'parent_id' => '',
-        'child_id' => ''
-    ];
+    public $expanded = [];
 
     /**
      * Set whether to show parent posts or not.
@@ -41,10 +38,9 @@ class walker_taxonomy_posts extends \Walker_Category {
         $this->suffix_prefix = $suffix_prefix;
     }
 
-    public function set_expanded($parent, $child)
+    public function set_expanded($term_ids)
     {
-        $this->expanded['parent_id'] = $parent;
-        $this->expanded['child_id'] = $child;
+        $this->expanded = $term_ids;
     }
 
     /**
@@ -89,7 +85,7 @@ class walker_taxonomy_posts extends \Walker_Category {
             /**
              * Set whether expanded or not.
              */
-            if ($this->category->term_id == $this->expanded["parent_id"] || $this->category->term_id == $this->expanded["child_id"]){
+            if (in_array($this->category->term_id, $this->expanded)){
                 foreach ($this->pregged_suffix_prefix as $suffix_prefix_key => $suffix_prefix)
                 {
                     $this->pregged_suffix_prefix[$suffix_prefix_key] = str_replace('<input', '<input checked', $suffix_prefix);
@@ -310,7 +306,6 @@ class walker_taxonomy_posts extends \Walker_Category {
         if ( 'list' !== $args['style'] ) {
             return;
         }
-     
         $indent  = str_repeat( "\t", $depth );
         $output .= "$indent".$this->pregged_suffix_prefix["prefix_unordered_list_open"]."<ul class='children ".$this->classes['unordered_list_classes']."'>".$this->pregged_suffix_prefix["suffix_unordered_list_open"]."\n";
     }

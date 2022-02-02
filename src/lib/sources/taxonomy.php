@@ -74,19 +74,44 @@ class taxonomy implements sourceInterface
         // get current page
         global $wp_query;
 
-        // Expand
+        // TERM
         if (is_a($wp_query->queried_object, 'WP_Term'))
         {
-            $this->walker->set_expanded($wp_query->queried_object->parent, $wp_query->queried_object->term_id);
-            // string replace to include 'checked'
-            $this->options_data["prefix_suffix"]["suffix_top_unordered_list_open"] = str_replace('<input', '<input checked', $this->options_data["prefix_suffix"]["suffix_top_unordered_list_open"]);
+            $this->walker->set_expanded([$wp_query->queried_object->parent, $wp_query->queried_object->term_id]);
             
         }
 
-        // Don't Expand.
-        if (!is_a($wp_query->queried_object, 'WP_Term'))
+        // POST
+        if (is_a($wp_query->queried_object, 'WP_Post'))
         {
-            $this->walker->set_expanded('', '');
+            $terms = [];
+            $term_ids = [];
+            $taxonomies = get_post_taxonomies($wp_query->queried_object);
+
+            if (!empty($taxonomies))
+            {
+                foreach ($taxonomies as $taxonomy)
+                {
+                    $terms = get_the_terms($wp_query->queried_object, $taxonomy);
+                }
+            }
+
+            if (!empty($terms))
+            {
+                foreach ($terms as $term){
+                    $term_ids[]  = $term->term_id;
+                }
+            }
+
+            if (!empty($term_ids)){
+                $this->walker->set_expanded($term_ids);
+            }
+
+        }
+
+        // Top parent
+        if (!is_page()){
+            $this->options_data["prefix_suffix"]["suffix_top_unordered_list_open"] = str_replace('<input', '<input checked', $this->options_data["prefix_suffix"]["suffix_top_unordered_list_open"]);
         }
 
     }
