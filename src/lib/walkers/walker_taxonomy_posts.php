@@ -293,7 +293,6 @@ class walker_taxonomy_posts extends \Walker_Category {
             foreach ($posts as $key => $post) {
                 $posts_list .= $this->pregged_suffix_prefix["prefix_list_item_open"].'<li class="post-item post-item-'.$post->ID.' '.$this->classes['list_item_classes'].'">'.$this->pregged_suffix_prefix["suffix_list_item_open"];
                 $posts_list .= $this->pregged_suffix_prefix["prefix_link_open"].'<a class="'.$this->classes['link_classes'].'" href="' . get_permalink($post->ID) . '">'.$this->pregged_suffix_prefix["suffix_link_open"];
-                // $posts_list .= $this->numberToRoman($key+1) .'. ';
                 $posts_list .= $key+1 .'.  ';
                 $posts_list .= get_the_title($post->ID);
                 $posts_list .= $this->pregged_suffix_prefix["prefix_link_close"].'</a>'.$this->pregged_suffix_prefix["suffix_link_close"];
@@ -335,23 +334,4 @@ class walker_taxonomy_posts extends \Walker_Category {
         $output .= "$indent".$this->pregged_suffix_prefix["prefix_list_item_close"]."</ul>".$this->pregged_suffix_prefix["suffix_list_item_close"]."\n";
     }
 
-
-    /**
-     * @param int $number
-     * @return string
-     */
-    public function numberToRoman($number) {
-        $map = array('M' => 1000, 'CM' => 900, 'D' => 500, 'CD' => 400, 'C' => 100, 'XC' => 90, 'L' => 50, 'XL' => 40, 'X' => 10, 'IX' => 9, 'V' => 5, 'IV' => 4, 'I' => 1);
-        $returnValue = '';
-        while ($number > 0) {
-            foreach ($map as $roman => $int) {
-                if($number >= $int) {
-                    $number -= $int;
-                    $returnValue .= $roman;
-                    break;
-                }
-            }
-        }
-        return $returnValue;
-    }
 }
