@@ -294,7 +294,7 @@ class walker_taxonomy_posts extends \Walker_Category {
                 $posts_list .= $this->pregged_suffix_prefix["prefix_list_item_open"].'<li class="post-item post-item-'.$post->ID.' '.$this->classes['list_item_classes'].'">'.$this->pregged_suffix_prefix["suffix_list_item_open"];
                 $posts_list .= $this->pregged_suffix_prefix["prefix_link_open"].'<a class="'.$this->classes['link_classes'].'" href="' . get_permalink($post->ID) . '">'.$this->pregged_suffix_prefix["suffix_link_open"];
                 $posts_list .= $key+1 .'.  ';
-                $posts_list .= get_the_title($post->ID);
+                $posts_list .= apply_filters('sidebar_post_title', get_the_title($post->ID), $key, $post );
                 $posts_list .= $this->pregged_suffix_prefix["prefix_link_close"].'</a>'.$this->pregged_suffix_prefix["suffix_link_close"];
                 $posts_list .= $this->pregged_suffix_prefix["prefix_list_item_close"].'</li>'.$this->pregged_suffix_prefix["suffix_list_item_close"];
             }
