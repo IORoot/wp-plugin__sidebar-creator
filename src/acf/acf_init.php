@@ -10,6 +10,7 @@ class acf_init
 
     public function __construct(){
         $this->andyp_plugin_register();
+        $this->acf_field_groups();
         $this->acf_admin_menu();
         $this->acf_field_filters();
         $this->acf_on_update();
@@ -19,6 +20,11 @@ class acf_init
     public function andyp_plugin_register()
     {
         require __DIR__.'/andyp_plugin_register.php';
+    }
+
+    public function acf_field_groups()
+    {
+        require __DIR__.'/acf_field_groups.php';
     }
 
     public function acf_admin_menu()
