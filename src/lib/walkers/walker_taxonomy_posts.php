@@ -154,7 +154,8 @@ class walker_taxonomy_posts extends \Walker_Category {
             $this->pregged_suffix_prefix["prefix_link_open"],
             $attributes,
             $this->pregged_suffix_prefix["suffix_link_open"],
-            $cat_name,
+            apply_filters('sidebar_cat_name', $cat_name, $category ),
+            // $cat_name,
             $this->pregged_suffix_prefix["prefix_link_close"],
             $this->pregged_suffix_prefix["suffix_link_close"],
         );
