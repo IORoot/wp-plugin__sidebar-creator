@@ -8,6 +8,10 @@ namespace andyp\sidebarmenu\lib;
 class register_shortcodes
 {
 
+    private $cache_busting_version = '1.0.0';
+    private $TTL = DAY_IN_SECONDS;
+    private $transient;
+
     public function __construct(){
         $this->register_shortcodes();
     }
@@ -19,11 +23,36 @@ class register_shortcodes
     }
 
 
+    // Get the sidebar.
     public function run($attributes = array(), $content = null)
     {
+
+        if ($this->check_transient()) {
+            return $this->transient;
+        }
+
         $sidebar = new build_sidebar;
         $sidebar->set_attributes($attributes);
         $sidebar->build_sidebar();
-        return $sidebar->get_result();
+        $sidebar_html = $sidebar->get_result();
+
+        // Set the data transient.
+        set_transient( 'sidebar_menu__' . $this->$cache_busting_version, $sidebar_html, $this->TTL );
+    
+        return $sidebar_html;
     }
+
+
+    /**
+     * Check if there is a cacheed copy of the data or not.
+     *
+     * @return void
+     */
+    private function check_transient()
+    {
+        $this->transient = get_transient( 'sidebar_menu__' . $this->$cache_busting_version);
+        if (!empty($this->transient)){  return true; }
+        return false;
+    }
+    
 }
