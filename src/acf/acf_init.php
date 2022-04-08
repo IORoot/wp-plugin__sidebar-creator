@@ -13,7 +13,6 @@ class acf_init
         $this->acf_field_groups();
         $this->acf_admin_menu();
         $this->acf_field_filters();
-        $this->acf_on_update();
         
     }
 
@@ -38,8 +37,4 @@ class acf_init
         new filters\populate_menu_list;
     }
 
-    public function acf_on_update()
-    {
-        require __DIR__.'/acf_on_update.php';
-    }
 }

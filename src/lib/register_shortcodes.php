@@ -8,7 +8,7 @@ namespace andyp\sidebarmenu\lib;
 class register_shortcodes
 {
 
-    private $cache_busting_version = '1.0.0';
+    private $cache_busting_version = '1.0.2';
     private $TTL = DAY_IN_SECONDS;
     private $transient;
 
@@ -37,7 +37,7 @@ class register_shortcodes
         $sidebar_html = $sidebar->get_result();
 
         // Set the data transient.
-        set_transient( 'sidebar_menu__' . $this->$cache_busting_version, $sidebar_html, $this->TTL );
+        set_transient( 'sidebar_menu__' . $this->cache_busting_version, $sidebar_html, $this->TTL );
     
         return $sidebar_html;
     }
@@ -50,7 +50,7 @@ class register_shortcodes
      */
     private function check_transient()
     {
-        $this->transient = get_transient( 'sidebar_menu__' . $this->$cache_busting_version);
+        $this->transient = get_transient( 'sidebar_menu__' . $this->cache_busting_version);
         if (!empty($this->transient)){  return true; }
         return false;
     }
