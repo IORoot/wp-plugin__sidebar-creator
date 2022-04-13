@@ -27,6 +27,10 @@ class register_shortcodes
     public function run($attributes = array(), $content = null)
     {
 
+        if (isset($_GET["CLEAR_TRANSIENT"])) {
+            delete_transient('sidebar_menu__' . $this->cache_busting_version);
+        }
+
         if ($this->check_transient()) {
             return $this->transient;
         }
